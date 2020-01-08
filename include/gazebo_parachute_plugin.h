@@ -78,7 +78,7 @@ private:
   double terminate_rot_vel_ = -1700;
   int motor_number_;
 
-  std::string trigger_sub_topic_ = "~/video_stream";
+  std::string trigger_sub_topic_ = "/gazebo/command/motor_speed";
 
   transport::NodePtr node_handle_;
   transport::SubscriberPtr trigger_sub_;
