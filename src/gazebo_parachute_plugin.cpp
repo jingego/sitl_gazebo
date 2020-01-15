@@ -105,10 +105,19 @@ void ParachutePlugin::LoadParachute(){
 
 void ParachutePlugin::AttachParachute(physics::ModelPtr &parachute_model){
 
+#if GAZEBO_MAJOR_VERSION >= 9
   const ignition::math::Pose3d uavPose = model_->WorldPose();
+#else
+  const ignition::math::Pose3d uavPose = ignitionFromGazeboMath(model_->GetWorldPose()); //TODO(burrimi): Check tf.
+#endif
   parachute_model->SetWorldPose(ignition::math::Pose3d(uavPose.Pos().X(), uavPose.Pos().Y(), uavPose.Pos().Z()+0.3, 0, 0, 0));        // or use uavPose.ros.GetYaw() ?
 
+#if GAZEBO_MAJOR_VERSION >= 9
   gazebo::physics::JointPtr parachute_joint = world_->Physics()->CreateJoint("fixed", model_);
+#else
+  gazebo::physics::JointPtr parachute_joint = world_->GetPhysicsEngine()->CreateJoint("fixed", model_);
+#endif
+
   parachute_joint->SetName("parachute_joint");
   
   // Attach parachute to base_link
