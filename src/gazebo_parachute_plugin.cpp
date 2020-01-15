@@ -67,9 +67,11 @@ void ParachutePlugin::Load(physics::ModelPtr _model, sdf::ElementPtr _sdf)
 }
 
 void ParachutePlugin::OnUpdate(const common::UpdateInfo&){
-
+  #if GAZEBO_MAJOR_VERSION >= 9
     physics::ModelPtr parachute_model = world_->ModelByName("parachute_small");
-
+  #else
+    physics::ModelPtr parachute_model = world_->GetModel("parachute_small");
+  #endif
     //Trigger parachute if flight termination
     if(ref_motor_rot_vel_ <= terminate_rot_vel_ ) LoadParachute();
 
@@ -88,7 +90,11 @@ void ParachutePlugin::VelocityCallback(CommandMotorSpeedPtr &rot_velocities) {
 
 void ParachutePlugin::LoadParachute(){
   // Don't create duplicate paracutes
-  if(physics::ModelPtr parachute_model = world_->ModelByName("parachute_small")) return;
+  #if GAZEBO_MAJOR_VERSION >= 9
+    if(physics::ModelPtr parachute_model = world_->ModelByName("parachute_small")) return;
+  #else
+    if(physics::ModelPtr parachute_model = world_->GetModel("parachute_small")) return;
+  #endif
   // Insert parachute model
   world_->InsertModelFile("model://parachute_small");
 
