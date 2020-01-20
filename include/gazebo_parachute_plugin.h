@@ -74,7 +74,7 @@ private:
 
   bool attached_parachute_ = false;
   double max_rot_velocity_ = 3500;
-  double ref_motor_rot_vel_;
+  double ref_motor_rot_vel_ = 0;
   double terminate_rot_vel_ = -1700;
   int motor_number_;
 
