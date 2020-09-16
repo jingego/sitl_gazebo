@@ -283,11 +283,11 @@ add_library(sensor_msgs SHARED ${SEN_PROTO_SRCS})
 link_libraries(mav_msgs nav_msgs std_msgs sensor_msgs)
 link_libraries(physics_msgs)
 
-add_library(gazebo_geotagged_images_plugin SHARED src/gazebo_geotagged_images_plugin.cpp)
+#add_library(gazebo_geotagged_images_plugin SHARED src/gazebo_geotagged_images_plugin.cpp)
 add_library(gazebo_gps_plugin SHARED src/gazebo_gps_plugin.cpp)
 add_library(gazebo_irlock_plugin SHARED src/gazebo_irlock_plugin.cpp)
 add_library(gazebo_lidar_plugin SHARED src/gazebo_lidar_plugin.cpp)
-add_library(gazebo_opticalflow_plugin SHARED src/gazebo_opticalflow_plugin.cpp)
+#add_library(gazebo_opticalflow_plugin SHARED src/gazebo_opticalflow_plugin.cpp)
 add_library(gazebo_sonar_plugin SHARED src/gazebo_sonar_plugin.cpp)
 add_library(gazebo_uuv_plugin SHARED src/gazebo_uuv_plugin.cpp)
 add_library(gazebo_vision_plugin SHARED src/gazebo_vision_plugin.cpp)
@@ -300,11 +300,11 @@ add_library(gazebo_multirotor_base_plugin SHARED src/gazebo_multirotor_base_plug
 add_library(gazebo_wind_plugin SHARED src/gazebo_wind_plugin.cpp)
 
 set(plugins
-  gazebo_geotagged_images_plugin
+  #gazebo_geotagged_images_plugin
   gazebo_gps_plugin
   gazebo_irlock_plugin
   gazebo_lidar_plugin
-  gazebo_opticalflow_plugin
+  #gazebo_opticalflow_plugin
   gazebo_sonar_plugin
   gazebo_uuv_plugin
   gazebo_vision_plugin
@@ -320,7 +320,7 @@ set(plugins
 foreach(plugin ${plugins})
   target_link_libraries(${plugin} ${Boost_LIBRARIES} ${GAZEBO_LIBRARIES} ${TinyXML_LIBRARIES})
 endforeach()
-target_link_libraries(gazebo_opticalflow_plugin ${OpticalFlow_LIBS})
+#target_link_libraries(gazebo_opticalflow_plugin ${OpticalFlow_LIBS})
 
 # If BUILD_ROS_INTERFACE set to ON, build plugins that have ROS dependencies
 # Current plugins that can be used with ROS interface: gazebo_motor_failure_plugin
