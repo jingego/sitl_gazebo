@@ -185,7 +185,7 @@ void GazeboMavlinkInterface::Load(physics::ModelPtr _model, sdf::ElementPtr _sdf
   // simulation iteration.
   updateConnection_ = event::Events::ConnectWorldUpdateBegin(
       boost::bind(&GazeboMavlinkInterface::OnUpdate, this, _1));
-
+  speed_square = 0;
   // Subscriber to IMU sensor_msgs::Imu Message and SITL message
   imu_sub_ = node_handle_->Subscribe("~/" + model_->GetName() + imu_sub_topic_, &GazeboMavlinkInterface::ImuCallback, this);
   lidar_sub_ = node_handle_->Subscribe("~/" + model_->GetName() + lidar_sub_topic_, &GazeboMavlinkInterface::LidarCallback, this);
@@ -536,6 +536,8 @@ void GazeboMavlinkInterface::ImuCallback(ImuPtr& imu_message) {
     float abs_pressure_noise = 1.0f * (float)y1;
     sensor_msg.abs_pressure += abs_pressure_noise;
 
+    sensor_msg.abs_pressure -= 0.5 * 1.225 * speed_square;
+
     // convert to hPa
     sensor_msg.abs_pressure *= 0.01f;
 
@@ -645,6 +647,8 @@ void GazeboMavlinkInterface::GpsCallback(GpsPtr& gps_msg){
   hil_gps_msg.vn = gps_msg->velocity_north() * 100.0;
   hil_gps_msg.ve = gps_msg->velocity_east() * 100.0;
   hil_gps_msg.vd = -gps_msg->velocity_up() * 100.0;
+
+  speed_square = (gps_msg->velocity_north() * gps_msg->velocity_north()) + (gps_msg->velocity_east() + gps_msg->velocity_east());
   // MAVLINK_HIL_GPS_T CoG is [0, 360]. math::Angle::Normalize() is [-pi, pi].
   ignition::math::Angle cog(atan2(gps_msg->velocity_east(), gps_msg->velocity_north()));
   cog.Normalize();
